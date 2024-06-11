@@ -2,13 +2,65 @@ import os
 import re
 from PyPDF2 import PdfReader
 from crewai import Agent, Task, Process, Crew
-from tools import write_to_excel_tool  # Ensure tools.py is in the same directory
+from crewai_tools import tool
 import openpyxl
+from openpyxl import load_workbook
 
 file_path = "resume_data.xlsx"
-
 os.environ["OPENAI_MODEL_NAME"] = 'gpt-4'  
 os.environ["OPENAI_API_KEY"] = 'Your API Key'
+
+@tool
+def write_to_excel_tool(file_path: str, data: list) -> str:
+    """
+    Writes the provided data to an Excel file at the specified file path.
+    If the file exists, it appends the data to it.
+    If the file does not exist, it creates a new file and writes the data to it.
+
+    Args:
+        file_path (str): The path where the Excel file will be saved.
+        data (list): A list of dictionaries containing the data to be written to the Excel file.
+
+    Returns:
+        str: A message indicating the success of the operation.
+    """
+    if not data:
+        return "No data provided to write to the Excel file."
+
+    headers = list(data[0].keys())
+
+    try:
+        if os.path.exists(file_path):
+            workbook = load_workbook(file_path)
+            worksheet = workbook.active
+            existing_headers = [cell.value for cell in worksheet[1]]
+
+            if existing_headers != headers:
+                return "Headers do not match. Please ensure the data format is consistent."
+
+            start_row = worksheet.max_row + 1
+        else:
+            workbook = openpyxl.Workbook()
+            worksheet = workbook.active
+            for col_num, header in enumerate(headers, 1):
+                worksheet.cell(row=1, column=col_num, value=header)
+            start_row = 2
+
+        for row_num, row_data in enumerate(data, start_row):
+            for col_num, (key, cell_data) in enumerate(row_data.items(), 1):
+                worksheet.cell(row=row_num, column=col_num, value=cell_data)
+
+        workbook.save(file_path)
+        return f"Data successfully written to {file_path}"
+
+    except PermissionError:
+        return f"Permission denied: unable to write to {file_path}"
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+def cache_func(args, result):
+    return True  
+write_to_excel_tool.cache_function = cache_func
 
 def extract_text_from_pdf(pdf_path):
     pdf_reader = PdfReader(pdf_path)
