@@ -66,13 +66,13 @@ To process the resumes and extract the information, follow these steps:
 
 ## File Structure
 resume-processing-pipeline/
--│
--├── resumes/ # Directory containing PDF resumes
--├── main.py # Main script to process the resumes
--├── requirements.txt # List of required packages
--├── README.md # Project documentation
--├── tools.py # Tool functions used in the pipeline
--└── write_to_excel_tool.py # Function to write data to Excel file
+- │
+- ├── resumes/ # Directory containing PDF resumes
+- ├── main.py # Main script to process the resumes
+- ├── requirements.txt # List of required packages
+- ├── README.md # Project documentation
+- ├── tools.py # Tool functions used in the pipeline
+- └── write_to_excel_tool.py # Function to write data to Excel file
 
 ## Contributing
 
