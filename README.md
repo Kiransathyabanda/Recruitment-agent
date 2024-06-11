@@ -65,7 +65,6 @@ To process the resumes and extract the information, follow these steps:
 3. The results will be saved in the `resume_data.xlsx` file in the root directory.
 
 ## File Structure
-
 resume-processing-pipeline/
 │
 ├── resumes/ # Directory containing PDF resumes
