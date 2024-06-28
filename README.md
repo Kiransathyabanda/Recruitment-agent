@@ -20,8 +20,8 @@ To set up the project, you need to have Python installed. Follow the steps below
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/your-username/resume-processing-pipeline.git
-    cd resume-processing-pipeline
+    git clone https://github.com/kiransathyabanda/Recruitment-agent.git
+    cd Recruitment-agent
     ```
 
 2. Create a virtual environment:
